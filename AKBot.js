@@ -46,9 +46,9 @@ bot.on('ready', () => {
 });
 
 function checkKillboard() {
-  Albion.getRecentEvents({ limit: 51 }, (err, events) => {
+  Albion.getRecentEvents({ limit: 51, offset: 0 }, (err, events) => {
     events.forEach(event => {
-      const eventID = event.EventID;
+      const eventID = event.EventId;
       if (event.Killer.AllianceName !== config.AllianceTAG
           || killList.kills.indexOf(eventID) !== -1) {
         return;
