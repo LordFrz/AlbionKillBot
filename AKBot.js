@@ -1,7 +1,7 @@
 //CREDITS to https://medium.com/@renesansz/tutorial-creating-a-simple-discord-bot-9465a2764dc0 for discord tutorial.
 //CREDITS to http://psykzz.com/albion-api/ for the albion API
 //USING - Discord.io and running with Node.js
-
+// Do what you want with this, but dont be a dick and sell it with minimal changes. 
 var Discord = require('discord.io');
 var logger = require('winston');
 var Albion = require('albion-api');
