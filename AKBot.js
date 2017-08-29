@@ -4,163 +4,144 @@
 * Credits: to http://psykzz.com/albion-api/ for the albion API
 * Using: Discord.io and running with Node.js
 */
-var Discord = require('discord.io');
-var logger = require('winston');
-var Albion = require('albion-api');
-var auth = require('./auth.json');
-var fs = require("fs");
-var config = require("./config.json");
-//Global list of used killID's
-//Will eventualy be switched to a database
-var killList;
-var killFile;
+const Albion = require('albion-api');
+const Discord = require('discord.io');
+const fs = require('fs');
+const logger = require('winston');
 
-//Read eventID file to get a list of all posted events
-fs.readFile('eventID.json', 'utf8', function readFileCallback(err, data){
-    if (err){
-        console.log(err);
-    } else {
-		var obj = JSON.parse(data);
-		killList = obj;
-	}
-});
-	
+const auth = require('./auth.json');
+const config = require('./config.json');
+
+// Global list of used kill IDs
+// Will eventually be switched to a database
+let killList;
+
 // Configure logger settings
 logger.remove(logger.transports.Console);
-logger.add(logger.transports.Console, {
-    colorize: true
-});
+logger.add(logger.transports.Console, { colorize: true });
 logger.level = 'debug';
-// Initialize Discord Bot
-var bot = new Discord.Client({
-   token: auth.token,
-   autorun: true
-});
-bot.on('ready', function (evt) {
-    logger.info('Connected');
-    logger.info('Logged in as: ');
-    logger.info(bot.username + ' - (' + bot.id + ')');
-	//Initial check for kills
-	check_Kill();
-	//Runs Kill post function every 60seconds
-	setInterval(function(){check_Kill();}, 60000);
-	
-});
-function check_Kill(){
-	//I have modified the Albion API here for the getRecentEvents fuction.
-	Albion.getRecentEvents("51", function(rs,cb){
-		//the getRectEvents "51" tells me how many event to look at, can be 1-51.
-		
-		var EventID = "";
-		for (i in cb)
-		{
-			EventID = cb[i].EventId;
-			if(cb[i].Killer["AllianceName"] == config.AllianceTAG)
-			{
-				if(killList.kills.indexOf(EventID) == -1)
-				{
-					killList.kills.push(EventID); // Add EventID to list
-					killLFile = JSON.stringify(killList);
-					fs.writeFile('eventID.json', killLFile, 'utf8', function(){}); //Writes eventID to file so bot remebers
-					
-					//Post Message---------------------------------------------------------------
-					Albion.getEventDetails(EventID, function(rs,cb){
-						//This sequence will get the Killers mainhand weapon
-						var wep = cb.Killer.Equipment.MainHand.Type;
-						var wepC = cb.Killer.Equipment.MainHand.Count;
-						var wepQ = cb.Killer.Equipment.MainHand.Quality;
-						//Crates url for mainhand weapon picture
-						var imgurl = "https://gameinfo.albiononline.com/api/gameinfo/items/" + wep + ".png?count=" + wepC + "&quality=" + wepQ
-						//Puts number of participants into number format
-						var player = parseInt(cb.numberOfParticipants);
-						//Number of participants minus the player equils assists
-						var numAssist = player - 1;
-						//Total damage done
-						var damage = 0;
-						//Killers damage
-						var killerDMG = 0;
-						//Loops though to total up all the damage done.
-						for(n in cb.Participants)
-						{
-							damage += cb.Participants[n].DamageDone;
-							if(cb.Participants[n].Name == cb.Killer["Name"])
-							{
-								killerDMG = cb.Participants[n].DamageDone;
-							}
-						}
-						//Caculates the percentage of damage done by the player.
-						var dmgPercent = Math.round((killerDMG / damage) * 100);
-						
-						bot.sendMessage({
-							
-							//to: '347561361628200960', //This is an example. (Set discord to developer mode, right click channel and click "Copy ID")
-							to: config.Channel,	
-								embed:
-								{ 
-									title: cb.Killer["Name"] + " of " + cb.Killer["GuildName"],
-									description: "**Victim**: " + cb.Victim["Name"] + "\n" +
-												 "**KillFame**: " + cb.TotalVictimKillFame + "\n" +
-												 "**VictimAlliance**: " + cb.Victim["AllianceName"] + "\n" +
-												 "**VictimGuild**: " + cb.Victim["GuildName"] + "\n" +
-												 "**DamageDone**: " + dmgPercent + "%" + "\n" +
-												 "**Assists**: " + numAssist ,
-												 
-									url: "https://albiononline.com/en/killboard/kill/" + cb.EventId,
-									thumbnail:{
-										url: imgurl,
-									},
-								}
-						});
-					});
-				}
-			}
-		}	
-	});
-}
-bot.on('message', function (user, userID, channelID, message, evt) {
 
-    if (message.substring(0, 1) == '!') {
-        var args = message.substring(1).split(' ');
-        var cmd = args[0];
-       
-        args = args.splice(1);
-		
-		//Checks the status of the albion server
-        switch(cmd) {
-            case 'akStatus':
-			Albion.getServerStatus(function(rs,cb){
-				bot.sendMessage({
-                    to: channelID,
-                    message: "Albion server is " + cb.live.status 
-                });
-			});
-            break;
-			// OR and || dont work for switch case, just add multiple stacking case 'command': before the break
-			case 'akCmd':
-			case 'akCommands':
-			case 'akHelp':
-				bot.sendMessage({
-                    to: channelID,
-                    message: "List of commands" + "\n" +
-							 "---------------------------------------------------------" + "\n" +
-							"!akCmd - List commands" + "\n" +
-							"!akCommands - List commands" + "\n" +
-							"!akHelp - List commands" + "\n" +
-							"!akStatus - Show server status" + "\n" +
-							"!akPurgeList - Clears list of all posted events"
-                });
-			break;
-			case 'akPurgeList':
-				var tmpList = killList;
-				tmpList.kills.length = 0;
-				var tmpFile;
-				tmpFile = JSON.stringify(tmpList);
-				fs.writeFile('eventID.json', tmpFile, 'utf8', function(){});
-				bot.sendMessage({
-                    to: channelID,
-                    message: "All EventID's cleared from file."
-                });
-			break;
-         }
-     }
+// Read eventID file to get a list of all posted events
+// If this fails, we cannot continue, so throw an exception.
+fs.readFile('eventID.json', 'utf8', (err, data) => {
+  if (err) { throw err; }
+  killList = JSON.parse(data);
+});
+
+// Initialize Discord Bot
+const bot = new Discord.Client({
+  token: auth.token,
+  autorun: true
+});
+
+bot.on('ready', () => {
+  logger.info('Connected');
+  logger.info(`Logged in as: ${bot.username} - (${bot.id})`);
+
+  //Initial check for kills
+  checkKillboard();
+
+  //Runs Kill post function every 60seconds
+  setInterval(checkKillboard, 60000);
+});
+
+function checkKillboard() {
+  Albion.getRecentEvents({ limit: 51 }, (err, events) => {
+    events.forEach(event => {
+      const eventID = event.EventID;
+      if (event.Killer.AllianceName !== config.AllianceTAG
+          || killList.kills.indexOf(eventID) !== -1) {
+        return;
+      }
+
+      killList.kills.push(eventID);
+      fs.writeFile('eventID.json', JSON.stringify(killList), 'utf8', (err) => {
+        if (err) { logger.error(`Error writing to file: ${err}`) }
+      });
+
+      Albion.getEventDetails(eventID, (err, event) => {
+        const weapon = event.Killer.Equipment.MainHand;
+        const imgUrl = [
+          `https://gameinfo.albiononline.com/api/gameinfo/items/`,
+          `${weapon.Type}.png`,
+          `?count=${weapon.Count}`,
+          `&quality=${weapon.Quality}`
+        ].join('');
+
+        const participants = parseInt(event.numberOfParticipants, 10);
+        const assists = participants - 1;
+
+        let killerDamage;
+        const totalDamage = event.Participants.reduce((damage, participant) => {
+          if (participant.Name === event.Killer.Name) {
+            killerDamage = participant.DamageDone;
+          }
+          return damage + participant.DamageDone;
+        }, 0);
+
+        const killerPercent = Math.round((killerDamage / totalDamage) * 100);
+
+        bot.sendMessage({
+          to: config.Channel,
+          embed: {
+            title: `${event.Killer.Name} of ${event.Killer.GuildName}`,
+            description: [
+              `**Victim**: ${event.Victim.Name}`,
+              `**KillFame**: ${event.TotalVictimKillFame}`,
+              `**VictimAlliance**: ${event.Victim.AllianceName}`,
+              `**VictimGuild**: ${event.Victim.GuildName}`,
+              `**DamageDone**: ${killerPercent}%`,
+              `**Assists**: ${assists}`,
+            ].join('\n'),
+            url: `https://albiononline.com/en/killboard/kill/${event.EventId}`,
+            thumbnail: { url: imgUrl },
+          }
+        });
+      })
+    });
+  });
+}
+
+bot.on('message', (user, userID, channelID, message) => {
+  if (message.substring(0, 1) !== '!') { return; }
+
+  const args = message.substring(1).split(' ');
+  const cmd = args[0];
+
+  args = args.slice(1);
+
+  switch(cmd) {
+    case 'akStatus':
+      Albion.getServerStatus((err, res) => {
+        bot.sendMessage({
+          to: channelID,
+          message: `Albion server is ${res.live.status}`,
+        });
+      });
+      break;
+    case 'akCmd':
+    case 'akCommands':
+    case 'akHelp':
+      bot.sendMessage({
+        to: channelID,
+        message: [
+          'List of commands',
+          '----------------',
+          '!akCmd - List commands',
+          '!akCommands - List commands',
+          '!akHelp - List commands',
+          '!akPurgeList - Clears list of all posted events',
+          '!akStatus - Show server status',
+        ].join('\n')
+      });
+      break;
+    case 'akPurgeList':
+      killList.splice(0, killList.length);
+      fs.writeFile('eventID.json', JSON.stringify(killList), 'utf8', () => { });
+      bot.sendMessage({
+        to: channelID,
+        message: 'All EventIDs cleared from file.'
+      });
+      break;
+  }
 });
