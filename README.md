@@ -18,3 +18,10 @@ More detailed instruction to be added later.
  
  - Line 55 <YOUR_ALLIANCE_TAG>
  - Line 94 <CHANNEL_ID>
+
+## Things that WILL be added
+- Commands to change setting within discord (Ex. Set alliance Tag)
+- Commands for maintinance
+- A way to set permissions for who can use commands
+- Commands to show player/guild stats
+- Commands to show specific kill
