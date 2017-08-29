@@ -1,12 +1,15 @@
-//CREDITS to https://medium.com/@renesansz/tutorial-creating-a-simple-discord-bot-9465a2764dc0 for discord tutorial.
-//CREDITS to http://psykzz.com/albion-api/ for the albion API
-//USING - Discord.io and running with Node.js
-// Do what you want with this, but dont be a dick and sell it with minimal changes. 
+/*
+* Author: Mineva of The Priest Academy
+* Thanks: to https://medium.com/@renesansz/tutorial-creating-a-simple-discord-bot-9465a2764dc0 for discord tutorial.
+* Credits: to http://psykzz.com/albion-api/ for the albion API
+* Using: Discord.io and running with Node.js
+*/
 var Discord = require('discord.io');
 var logger = require('winston');
 var Albion = require('albion-api');
 var auth = require('./auth.json');
 var fs = require("fs");
+var config = require("./config.json");
 //Global list of used killID's
 //Will eventualy be switched to a database
 var killList;
@@ -52,7 +55,7 @@ function check_Kill(){
 		for (i in cb)
 		{
 			EventID = cb[i].EventId;
-			if(cb[i].Killer["AllianceName"] == "<YOUR_ALLIANCE_TAG>")
+			if(cb[i].Killer["AllianceName"] == config.AllianceTAG)
 			{
 				if(killList.kills.indexOf(EventID) == -1)
 				{
@@ -91,7 +94,7 @@ function check_Kill(){
 						bot.sendMessage({
 							
 							//to: '347561361628200960', //This is an example. (Set discord to developer mode, right click channel and click "Copy ID")
-							to: '<CHANNEL_ID>',	
+							to: config.Channel,	
 								embed:
 								{ 
 									title: cb.Killer["Name"] + " of " + cb.Killer["GuildName"],
@@ -124,7 +127,7 @@ bot.on('message', function (user, userID, channelID, message, evt) {
 		
 		//Checks the status of the albion server
         switch(cmd) {
-            case 'aStatus':
+            case 'akStatus':
 			Albion.getServerStatus(function(rs,cb){
 				bot.sendMessage({
                     to: channelID,
@@ -133,17 +136,29 @@ bot.on('message', function (user, userID, channelID, message, evt) {
 			});
             break;
 			// OR and || dont work for switch case, just add multiple stacking case 'command': before the break
-			case 'aCmd':
-			case 'aCommands':
-			case 'aHelp':
+			case 'akCmd':
+			case 'akCommands':
+			case 'akHelp':
 				bot.sendMessage({
                     to: channelID,
                     message: "List of commands" + "\n" +
 							 "---------------------------------------------------------" + "\n" +
-							"!aCmd - List commands" + "\n" +
-							"!aCommands - List commands" + "\n" +
-							"!aHelp - List commands" + "\n" +
-							"!status - Show server status" + "\n" +
+							"!akCmd - List commands" + "\n" +
+							"!akCommands - List commands" + "\n" +
+							"!akHelp - List commands" + "\n" +
+							"!akStatus - Show server status" + "\n" +
+							"!akPurgeList - Clears list of all posted events"
+                });
+			break;
+			case 'akPurgeList':
+				var tmpList = killList;
+				tmpList.kills.length = 0;
+				var tmpFile;
+				tmpFile = JSON.stringify(tmpList);
+				fs.writeFile('eventID.json', tmpFile, 'utf8', function(){});
+				bot.sendMessage({
+                    to: channelID,
+                    message: "All EventID's cleared from file."
                 });
 			break;
          }

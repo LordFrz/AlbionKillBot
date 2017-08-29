@@ -1,9 +1,9 @@
 {
   "name": "Albion-KillBot",
-  "version": "1.6.0",
+  "version": "0.5.7",
   "description": "Posts kills to discord",
   "main": "AKBot.js",
-  "author": "SMKET",
+  "author": "Mineva",
   "dependencies": {
     "albion-api": "^1.3.0",
     "discord.io": "^2.5.1",
