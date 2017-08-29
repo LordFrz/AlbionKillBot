@@ -1,6 +1,7 @@
 # AlbionKillBot
 A Bot that posts kills to Discord
 
+![](http://i.imgur.com/iOeQiyE.png)
 
 ## Instructions
 More detailed instruction to be added later.
@@ -14,10 +15,8 @@ More detailed instruction to be added later.
 ![N|Solid](http://i.imgur.com/2SKHrU6.png)
 
  - Add bot secret token to the auth.json
- - Open AKBot.js and your Allaince Tag and channel ID
- 
- - Line 55 <YOUR_ALLIANCE_TAG>
- - Line 94 <CHANNEL_ID>
+ - Open auth.json and add your bot token
+ - Open config.json and add your alliancetag, and channelID
 
 ## Things that WILL be added
 - Commands to change setting within discord (Ex. Set alliance Tag)
@@ -25,3 +24,7 @@ More detailed instruction to be added later.
 - A way to set permissions for who can use commands
 - Commands to show player/guild stats
 - Commands to show specific kill
+
+## Using
+- Discord.io
+- [psykzz Albion-API](http://psykzz.com/albion-api/)
