@@ -69,7 +69,7 @@ function checkKillboard() {
         ].join('');
 
         const participants = parseInt(event.numberOfParticipants, 10);
-        const assists = participants - 1;
+        let assists = participants - 1;
         if (assists < 0)
         {
           assists = 0;
@@ -83,7 +83,7 @@ function checkKillboard() {
           return damage + participant.DamageDone;
         }, 0);
 
-        const killerPercent = Math.round((killerDamage / totalDamage) * 100);
+        let killerPercent = Math.round((killerDamage / totalDamage) * 100);
         if (killerPercent == "NaN")
         {
           killerPercent = 100;
