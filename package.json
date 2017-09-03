@@ -1,6 +1,6 @@
 {
   "name": "Albion-KillBot",
-  "version": "0.5.8",
+  "version": "0.5.9",
   "description": "Posts kills to discord",
   "main": "AKBot.js",
   "author": "Mineva",
