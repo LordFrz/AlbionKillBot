@@ -113,8 +113,8 @@ function checkKillboard() {
 bot.on('message', (user, userID, channelID, message) => {
   if (message.substring(0, 1) !== '!') { return; }
 
-  const args = message.substring(1).split(' ');
-  const cmd = args[0];
+  let args = message.substring(1).split(' ');
+  let cmd = args[0];
 
   args = args.slice(1);
 
