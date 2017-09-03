@@ -70,7 +70,11 @@ function checkKillboard() {
 
         const participants = parseInt(event.numberOfParticipants, 10);
         const assists = participants - 1;
-
+        if (assists < 0)
+        {
+          assists = 0;
+        }
+        
         let killerDamage;
         const totalDamage = event.Participants.reduce((damage, participant) => {
           if (participant.Name === event.Killer.Name) {
@@ -80,7 +84,11 @@ function checkKillboard() {
         }, 0);
 
         const killerPercent = Math.round((killerDamage / totalDamage) * 100);
-
+        if (killerPercent == "NaN")
+        {
+          killerPercent = 100;
+        }
+        
         bot.sendMessage({
           to: config.Channel,
           embed: {
