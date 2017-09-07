@@ -1,4 +1,5 @@
 {
 	"AllianceTAG": "<AllIANCE_TAG>",
-	"Channel": "<CHANNEL_ID>"
+	"Channel": "<CHANNEL_ID>",
+	"AllianceKey": "<ALLIANCE_KEY>"
 }
