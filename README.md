@@ -1,7 +1,9 @@
 # AlbionKillBot
-A Bot that posts kills to Discord
+A Bot that posts kills and battles to Discord
 
 ![](http://i.imgur.com/iOeQiyE.png)
+
+![](http://i.imgur.com/1zOhN1K.png)
 
 ## Instructions
 More detailed instruction to be added later.
@@ -16,7 +18,7 @@ More detailed instruction to be added later.
 
  - Add bot secret token to the auth.json
  - Open auth.json and add your bot token
- - Open config.json and add your alliancetag, and channelID
+ - Open config.json and add your alliancetag, and channelID, alliancekey
  - `npm start`
 
 ## Things that WILL be added
@@ -24,7 +26,6 @@ More detailed instruction to be added later.
 - Commands for maintinance
 - A way to set permissions for who can use commands
 - Commands to show player/guild stats
-- Commands to show specific kill
 
 ## Using
 - Discord.io
