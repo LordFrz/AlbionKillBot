@@ -30,3 +30,6 @@ More detailed instruction to be added later.
 ## Using
 - Discord.io
 - [psykzz Albion-API](http://psykzz.com/albion-api/)
+
+## [Discord](https://discord.gg/DWZ6rzX)
+- Install help, requests, ext.
