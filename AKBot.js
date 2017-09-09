@@ -105,10 +105,19 @@ function postBattle(battleID)
           embed: {
             title: `Battle Report`,
             description: [
-              `**Kills**: ${battle.alliances[tag].kills}`,
-              `**Deaths**: ${battle.alliances[tag].deaths}`,
-               `**KillFame**: ${battle.alliances[tag].killFame}`,
+		          `**Kills**: ${battle.alliances[tag].kills}`,
+		          `**Deaths**: ${battle.alliances[tag].deaths}`,
+		          `**KillFame**: ${battle.alliances[tag].killFame}`,
             ].join('\n'),
+	    fields: [{
+		name: "Battle Size",
+		value: [
+			`**Participants**: ${Object.keys(battle.players).length}`,
+			`**Guilds**: ${Object.keys(battle.guilds).length}`,
+			`**TotalDeaths**: ${battle.totalKills}`,
+			`**TotalFame**: ${battle.totalFame}`,
+		].join('\n'),
+	    }],	
             url: `https://albiononline.com/en/killboard/battles/${battleID}`,
           }
         });
