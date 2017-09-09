@@ -3,7 +3,7 @@ A Bot that posts kills and battles to Discord
 
 ![](http://i.imgur.com/iOeQiyE.png)
 
-![](http://i.imgur.com/1zOhN1K.png)
+![](http://i.imgur.com/LEu1xkR.png)
 
 ## Instructions
 More detailed instruction to be added later.
