@@ -49,7 +49,7 @@ A Bot that posts kills and battles to Discord
 
 **To Run type:** node AKBot.js
 
-*Optional to make thing auto run and autorestart*
+*Optional to make things auto run and autorestart*
 #### Type the following commands
 - npm install pm2@latest -g
 - npm install pm2-windows-startup -g
