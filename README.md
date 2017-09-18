@@ -33,7 +33,7 @@ A Bot that posts kills and battles to Discord
 - Add `ClientID` to this link, and visit it. https://discordapp.com/oauth2/authorize?client_id=ClientID&scope=bot&permissions=84992 -Ex. https://discordapp.com/oauth2/authorize?client_id=9876543210&scope=bot&permissions=84992
 - Open auth.json and add your Token. Ex. "token": "MzUxNzgeedaMzQ0.KGbeA.mIrFhCUHgwaXLU__lxc"
 - In discord, enable developer mode. In discord settings, under Appearance/Advanced
-- Rightclick on the channel you want the bot to post too. Then click Copy Id.
+- Rightclick on the channel you want the bot to post too. Then click `Copy Id`.
 - Open config.json and paste `Channel ID` into channel. Ex. "Channel": "0987654321"
 - Add `Alliance ID` to the config.json Ex. "AllianceTAG": "COPS"
 - Go to the Albion Killboard and search for your guild. Copy the numbers at th end of the url. 
