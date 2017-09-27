@@ -75,7 +75,12 @@ function checkKillboard() {
 		if (err) { logger.error(`Error writing to file: ${err}`) }
 	  });
 	  //Run the post event function
-	  postEvent(eventID);
+	  if(event.TotalVictimKillFame === 0)
+	  {
+		  return;
+	  }else{
+		  postEvent(eventID);
+	  }
 	  
 	});
 	});
@@ -172,6 +177,7 @@ bot.on('message', (user, userID, channelID, message) => {
 function postEvent(eventID)
 {
       Albion.getEventDetails(eventID, (err, event) => {
+	let sym = "%";
         const weapon = event.Killer.Equipment.MainHand;
         const imgUrl = [
           `https://gameinfo.albiononline.com/api/gameinfo/items/`,
@@ -182,10 +188,10 @@ function postEvent(eventID)
 
         const participants = parseInt(event.numberOfParticipants, 10);
         const assists = participants - 1;
-		if (assists < 0)
-		{
-			assists = 0;
-		}
+	if (assists < 0)
+	{
+		assists = 0;
+	}
 		
         let killerDamage;
         const totalDamage = event.Participants.reduce((damage, participant) => {
@@ -196,10 +202,11 @@ function postEvent(eventID)
         }, 0);
 
         const killerPercent = Math.round((killerDamage / totalDamage) * 100);
-		if (killerPercent == "NaN")
-		{
-			killerPercent = 100;
-		}
+	if (isNaN(killerPercent))
+	{
+		killerPercent = "EXECUTED";
+		sym = "";
+	}else{sym = "%";}
 		
 		
         bot.sendMessage({
@@ -211,7 +218,7 @@ function postEvent(eventID)
               `**KillFame**: ${event.TotalVictimKillFame}`,
               `**VictimAlliance**: ${event.Victim.AllianceName}`,
               `**VictimGuild**: ${event.Victim.GuildName}`,
-              `**DamageDone**: ${killerPercent}%`,
+              `**DamageDone**: ${killerPercent} ${sym}`,
               `**Assists**: ${assists}`,
             ].join('\n'),
             url: `https://albiononline.com/en/killboard/kill/${event.EventId}`,
