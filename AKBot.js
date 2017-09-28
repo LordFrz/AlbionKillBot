@@ -97,7 +97,11 @@ function checkKillboard() {
 			fs.writeFile('battleID.json', JSON.stringify(battleList), 'utf8', (err) => {
 				if (err) { logger.error(`Error writing to file: ${err}`) }
 			});
-			postBattle(battleID);
+			if(battle.totalFame === 0){
+				return;
+			}else{
+				postBattle(battleID);
+			}
 		});
 	});
 }
