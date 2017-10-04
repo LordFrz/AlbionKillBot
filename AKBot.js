@@ -205,7 +205,7 @@ function postEvent(eventID)
           return damage + participant.DamageDone;
         }, 0);
 
-        const killerPercent = Math.round((killerDamage / totalDamage) * 100);
+        let killerPercent = Math.round((killerDamage / totalDamage) * 100);
 	if (isNaN(killerPercent))
 	{
 		killerPercent = "EXECUTED";
