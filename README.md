@@ -39,7 +39,7 @@ A Bot that posts kills and battles to Discord
 - Open config.json and paste `Channel ID` into channel. Ex. "Channel": "0987654321"
 - Add `Alliance ID` to the config.json Ex. "AllianceTAG": "COPS"
 - Go to the Albion Killboard and search for your guild. Copy the numbers at th end of the url. 
-- Go to https://gameinfo.albiononline.com/api/gameinfo/guilds/<GuildID>     Replace <GuildID> with what you copied in previous step.
+- Go to https://gameinfo.albiononline.com/api/gameinfo/guilds/<!GuildID>     Replace <!GuildID> with what you copied in previous step.
 - Copy the numbers after "AllianceId": and paste them into the `AllianceKey` field in config.json
 - Open command window inside folder with AKBot.js
 
