@@ -43,10 +43,12 @@ A Bot that posts kills and battles to Discord
 - Copy the numbers after "AllianceId": and paste them into the `AllianceKey` field in config.json
 - Open command window inside folder with AKBot.js
 
+*You can skip this if you did `npm install`*
 #### Type the following commands
+
 - npm install albion-api
 - npm install request
-- npm install discord.io
+- npm install https://github.com/woor/discord.io/tarball/gateway_v6
 - npm install winston
 
 **To Run type:** node AKBot.js
@@ -60,14 +62,14 @@ A Bot that posts kills and battles to Discord
 - pm2 save
 
 
-## Things that WILL be added
+## Things to be added
 - Commands to change setting within discord (Ex. Set alliance Tag)
 - Commands for maintinance
 - A way to set permissions for who can use commands
 - Commands to show player/guild stats
 
 ## Using
-- Discord.io
+- Discord.io forked by woor/discord.io/tarball/gateway_v6
 - [psykzz Albion-API](http://psykzz.com/albion-api/)
 
 ## [Discord](https://discord.gg/DWZ6rzX)
